@@ -2,7 +2,7 @@
 
 A standalone HTML viewer that helps Old World players understand which ambitions they can get based on their nation, families, and current game state.
 
-**[View the Ambition Viewer](https://yourusername.github.io/owambitions/viewer/index.html)** *(update URL after deploying)*
+**[View the Ambition Viewer](https://alcaras.github.io/owambitions/)**
 
 ## What This Does
 
