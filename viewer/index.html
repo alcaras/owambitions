@@ -176,6 +176,11 @@ header h1 { color: #d4af37; font-size: 2rem; margin-bottom: 5px; }
                     </div>
                     <div class="filter-group">
                         <label class="checkbox-label">
+                            <input type="checkbox" id="national-only"> National ambitions only
+                        </label>
+                    </div>
+                    <div class="filter-group">
+                        <label class="checkbox-label">
                             <input type="checkbox" id="show-unavailable"> Show unavailable
                         </label>
                     </div>
@@ -224,6 +229,7 @@ const completedButtons = document.getElementById('completed-buttons');
 const classSelect = document.getElementById('class-select');
 const searchInput = document.getElementById('search-input');
 const showUnavailable = document.getElementById('show-unavailable');
+const nationalOnly = document.getElementById('national-only');
 const resultCount = document.getElementById('result-count');
 const ambitionsList = document.getElementById('ambitions-list');
 
@@ -277,6 +283,7 @@ function initializeUI() {
     classSelect.addEventListener('change', filterAndRender);
     searchInput.addEventListener('input', debounce(filterAndRender, 200));
     showUnavailable.addEventListener('change', filterAndRender);
+    nationalOnly.addEventListener('change', filterAndRender);
 }
 
 function setupCompletedButtons() {
@@ -334,6 +341,7 @@ function filterAndRender() {
     const selectedClass = classSelect.value;
     const searchTerm = searchInput.value.toLowerCase().trim();
     const showUnavail = showUnavailable.checked;
+    const showNationalOnly = nationalOnly.checked;
 
     // Calculate tier from completed count
     let tierFilter = null;
@@ -346,8 +354,8 @@ function filterAndRender() {
     const regularAmbitions = data.ambitions.filter(a => !(a.flags?.victoryEligible && a.minTier === 10));
 
     const filterAmbitions = (ambitions) => ambitions.filter(ambition => {
-        // Filter by tier (if specific count selected)
-        if (tierFilter !== null) {
+        // Filter by tier (if specific count selected) - skip for national when showing national only
+        if (tierFilter !== null && !showNationalOnly) {
             if (ambition.minTier > tierFilter || ambition.maxTier < tierFilter) return false;
         }
         // Filter by class
@@ -361,7 +369,7 @@ function filterAndRender() {
         return true;
     });
 
-    const filteredRegular = filterAmbitions(regularAmbitions);
+    const filteredRegular = showNationalOnly ? [] : filterAmbitions(regularAmbitions);
     const filteredNational = filterAmbitions(nationalAmbitions);
 
     const processAmbitions = (ambitions) => {
@@ -383,8 +391,12 @@ function filterAndRender() {
     const availableRegular = filteredRegular.filter(a => checkAvailability(a).available).length;
     const availableNational = filteredNational.filter(a => checkAvailability(a).available).length;
 
-    let tierText = tierFilter ? ' at Tier ' + tierFilter : '';
-    resultCount.textContent = availableRegular + ' available' + tierText + ' (' + filteredRegular.length + ' total) + ' + availableNational + ' national';
+    if (showNationalOnly) {
+        resultCount.textContent = availableNational + ' national ambitions available (' + filteredNational.length + ' total)';
+    } else {
+        let tierText = tierFilter ? ' at Tier ' + tierFilter : '';
+        resultCount.textContent = availableRegular + ' available' + tierText + ' (' + filteredRegular.length + ' total) + ' + availableNational + ' national';
+    }
 
     renderAmbitions(finalRegular, finalNational);
 }

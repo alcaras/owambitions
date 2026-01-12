@@ -17,6 +17,7 @@ const tierMax = document.getElementById('tier-max');
 const classSelect = document.getElementById('class-select');
 const searchInput = document.getElementById('search-input');
 const showUnavailable = document.getElementById('show-unavailable');
+const nationalOnly = document.getElementById('national-only');
 const resultCount = document.getElementById('result-count');
 const ambitionsList = document.getElementById('ambitions-list');
 
@@ -88,6 +89,7 @@ function initializeUI() {
     classSelect.addEventListener('change', filterAndRender);
     searchInput.addEventListener('input', debounce(filterAndRender, 200));
     showUnavailable.addEventListener('change', filterAndRender);
+    if (nationalOnly) nationalOnly.addEventListener('change', filterAndRender);
 }
 
 /**
@@ -164,12 +166,22 @@ function filterAndRender() {
     const selectedClass = classSelect.value;
     const searchTerm = searchInput.value.toLowerCase().trim();
     const showUnavail = showUnavailable.checked;
+    const showNationalOnly = nationalOnly?.checked || false;
 
     // Filter ambitions
     const filtered = data.ambitions.filter(ambition => {
-        // Filter by tier
-        if (ambition.maxTier < minTier || ambition.minTier > maxTier) {
+        const isNational = ambition.flags?.victoryEligible && ambition.minTier === 10;
+
+        // National only filter
+        if (showNationalOnly && !isNational) {
             return false;
+        }
+
+        // Filter by tier (skip for national when showing national only)
+        if (!showNationalOnly) {
+            if (ambition.maxTier < minTier || ambition.minTier > maxTier) {
+                return false;
+            }
         }
 
         // Filter by class
@@ -221,7 +233,11 @@ function filterAndRender() {
 
     // Update result count
     const availableCount = ambitionsWithAvailability.filter(a => a.availability.available).length;
-    resultCount.textContent = `${availableCount} available of ${filtered.length} ambitions`;
+    if (showNationalOnly) {
+        resultCount.textContent = `${availableCount} national ambitions available (${filtered.length} total)`;
+    } else {
+        resultCount.textContent = `${availableCount} available of ${filtered.length} ambitions`;
+    }
 
     // Render
     renderAmbitions(finalList);

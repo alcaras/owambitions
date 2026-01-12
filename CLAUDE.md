@@ -70,8 +70,21 @@ bFamilyClassGoal = infos().goal(eLoopGoal).maeFamilyClass.Contains(game().getFam
 Goals matching family class get selection priority, but any valid goal can be offered.
 
 ### National Ambitions
-- Appear at Tier 10 with `bVictoryEligible` flag
-- Triggered at 70% victory progress (`NATIONAL_AMBITION_OFFER_THRESHOLD_PERCENT` in `globalsInt.xml`)
+- Appear at Tier 10 (after accepting 9 ambitions) with `bVictoryEligible` flag
+- Offered when you've completed **≥70%** of ANY ONE requirement (not all requirements)
+
+**70% Threshold Calculation** (`isGoalEligibleMargin` in `PlayerGoal.cs`):
+```csharp
+// Check: iDone * 100 >= iNeeded * iMarginPercent
+// With iMarginPercent = 70, this means: iDone >= iNeeded * 0.7
+```
+
+**Examples**:
+- "15 laws": 15 × 0.7 = 10.5 → offered at **11 laws**
+- "All families friendly": offered at 70% of families friendly
+- "15 laws AND all families friendly": offered when EITHER 11+ laws OR 70% families friendly
+
+For multi-part ambitions, the game checks each requirement independently and triggers when ANY ONE requirement reaches the 70% threshold. This is an OR condition, not AND.
 
 ### Event-Only Ambitions
 Some ambitions have `subjectWeight=0`, meaning they cannot be randomly offered - they can only be assigned through specific in-game events. The parser includes hardcoded event source data for these 13 ambitions:
