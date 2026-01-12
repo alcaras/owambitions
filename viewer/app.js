@@ -305,6 +305,27 @@ function renderAmbitions(ambitions) {
         // DLC badge
         let dlcBadge = ambition.dlc ? `<span class="dlc-badge">${ambition.dlc}</span>` : '';
 
+        // Event-only info
+        let eventInfo = '';
+        if (ambition.eventSource && ambition.eventSource.eventName) {
+            const eventDlc = ambition.eventSource.eventDlc ? ` (${ambition.eventSource.eventDlc})` : '';
+            eventInfo = `
+                <div class="event-source">
+                    <span class="event-only-badge">Event Only</span>
+                    <span class="event-name">Event: "${ambition.eventSource.eventName}"${eventDlc}</span>
+                    <span class="event-trigger">Trigger: ${ambition.eventSource.trigger}</span>
+                </div>
+            `;
+        } else if (ambition.eventSource) {
+            // For unused/placeholder goals
+            eventInfo = `
+                <div class="event-source">
+                    <span class="event-only-badge">Unavailable</span>
+                    <span class="event-trigger">${ambition.eventSource.trigger}</span>
+                </div>
+            `;
+        }
+
         return `
             <div class="ambition-card ${unavailClass}" data-class="${ambition.ambitionClass}">
                 <div class="ambition-header">
@@ -318,6 +339,7 @@ function renderAmbitions(ambitions) {
                     ${familyTags ? `<div class="family-tags">${familyTags}</div>` : ''}
                     ${techInfo}
                 </div>
+                ${eventInfo}
                 ${reqText ? `<div class="requirements">${reqText}</div>` : ''}
             </div>
         `;

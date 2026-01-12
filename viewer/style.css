@@ -291,6 +291,39 @@ header h1 {
     color: #88f;
 }
 
+.event-source {
+    margin-top: 10px;
+    padding: 8px;
+    background: #2d1f3d;
+    border: 1px solid #6b3fa0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.event-only-badge {
+    display: inline-block;
+    background: #6b3fa0;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.event-name {
+    display: block;
+    color: #c9a0dc;
+    margin-top: 5px;
+}
+
+.event-trigger {
+    display: block;
+    color: #a88fbc;
+    margin-top: 3px;
+    font-style: italic;
+}
+
 .requirements {
     margin-top: 10px;
     padding-top: 10px;

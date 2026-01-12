@@ -56,6 +56,76 @@ AMBITION_CLASS_NAMES = {
     40: "Lifestyle",
 }
 
+# Event-only ambitions (subjectWeight=0) and their source events
+# These can only be obtained through specific in-game events, not random selection
+EVENT_ONLY_AMBITIONS = {
+    "GOAL_LOSE_A_CITY": {
+        "eventName": "Strength and Weakness",
+        "dlc": "Behind the Throne",
+        "trigger": "Leader must be Insane, 3+ upset families"
+    },
+    "GOAL_FURIOUS_FAMILY": {
+        "eventName": "Strength and Weakness",
+        "dlc": "Behind the Throne",
+        "trigger": "Leader must be Insane, 3+ upset families"
+    },
+    "GOAL_TO_BE_KING": {
+        "eventName": "To Be A King/Queen",
+        "dlc": None,
+        "trigger": "Regent ruling with Rightful Heir alive"
+    },
+    "GOAL_THE_GREAT": {
+        "eventName": "The Road to Glory",
+        "dlc": None,
+        "trigger": "Young leader (under 30) with 2+ dead ancestors, on succession"
+    },
+    "GOAL_DESTROY_RIVALS": {
+        "eventName": "Rivals event chain (Let the Land Burn / No Surrender)",
+        "dlc": None,
+        "trigger": "At war, breach enemy city, part of Rivals chain"
+    },
+    "GOAL_KILL_CHARACTER": {
+        "eventName": "[Character's] Mark",
+        "dlc": "Behind the Throne",
+        "trigger": "Child of leader (teen+), angry foreign leader nearby, have spymaster"
+    },
+    "GOAL_HARVEST_WINE": {
+        "eventName": "A Refined Palate",
+        "dlc": "Behind the Throne",
+        "trigger": "Leader has high Charisma, unclaimed wine within 5 tiles"
+    },
+    "GOAL_TAKE_HANGING_GARDENS": {
+        "eventName": "The Jewel of [Nation]",
+        "dlc": "Behind the Throne",
+        "trigger": "Another nation owns the Hanging Gardens"
+    },
+    "GOAL_TAKE_CITY": {
+        "eventName": "Various conquest/rivalry events",
+        "dlc": None,
+        "trigger": "Rivalry or conquest event chains"
+    },
+    "GOAL_STATE_RELIGION_SPECIFIC": {
+        "eventName": "The Tutor Kartir",
+        "dlc": "Sacred and Profane",
+        "trigger": "Character studying, Zoroastrian city, Kartir tutor"
+    },
+    "GOAL_EIGHT_RELIGION_SPREAD_SPECIFIC": {
+        "eventName": "In Heaven as on Earth",
+        "dlc": "Sacred and Profane",
+        "trigger": "Augustine character, Christianity, after High Synod mission"
+    },
+    "GOAL_FOUR_RELIGION_SPREAD_SPECIFIC": {
+        "eventName": "Religion events",
+        "dlc": "Sacred and Profane",
+        "trigger": "Religion-specific event chains"
+    },
+    "GOAL_2000_EACH_YIELD": {
+        "eventName": None,
+        "dlc": None,
+        "trigger": "Unused/placeholder goal"
+    },
+}
+
 
 def parse_xml_file(filepath):
     """Parse an XML file and return the root element."""
@@ -467,6 +537,15 @@ def parse_goals():
             goal["requirements"]["minOpinionFamily"] = min_opinion
             goal["requirements"]["minOpinionFamilyName"] = format_type_name(min_opinion)
 
+        # Event-only ambitions (subjectWeight=0)
+        if ztype in EVENT_ONLY_AMBITIONS:
+            event_info = EVENT_ONLY_AMBITIONS[ztype]
+            goal["eventSource"] = {
+                "eventName": event_info["eventName"],
+                "eventDlc": event_info["dlc"],
+                "trigger": event_info["trigger"]
+            }
+
         goals.append(goal)
 
     print(f"  Parsed {len(goals)} goals")
@@ -676,6 +755,10 @@ header h1 { color: #d4af37; font-size: 2rem; margin-bottom: 5px; }
 .tech-prereq { background: #2a4a2a; color: #8f8; }
 .tech-obsolete { background: #4a2a2a; color: #f88; }
 .nation-prereq { background: #2a2a4a; color: #88f; }
+.event-source { margin-top: 10px; padding: 8px; background: #2d1f3d; border: 1px solid #6b3fa0; border-radius: 4px; font-size: 0.85rem; }
+.event-only-badge { display: inline-block; background: #6b3fa0; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 8px; }
+.event-name { display: block; color: #c9a0dc; margin-top: 5px; }
+.event-trigger { display: block; color: #a88fbc; margin-top: 3px; font-style: italic; }
 .requirements { margin-top: 10px; padding-top: 10px; border-top: 1px solid #333; font-size: 0.9rem; color: #aaa; }
 .requirements strong { color: #d4af37; }
 .dlc-badge { background: #4a3a2a; color: #da8; padding: 2px 6px; border-radius: 3px; font-size: 0.75rem; margin-left: 8px; }
@@ -811,10 +894,7 @@ header h1 { color: #d4af37; font-size: 2rem; margin-bottom: 5px; }
     </div>
 
     <script>
-// Embedded data
-const DATA = __DATA_PLACEHOLDER__;
-
-let data = DATA;
+let data = null;
 let selectedNation = '';
 let selectedFamilies = new Set();
 let completedCount = 'all'; // 'all' or 0-9
@@ -827,6 +907,20 @@ const searchInput = document.getElementById('search-input');
 const showUnavailable = document.getElementById('show-unavailable');
 const resultCount = document.getElementById('result-count');
 const ambitionsList = document.getElementById('ambitions-list');
+
+// Load data from JSON file
+async function loadData() {
+    try {
+        ambitionsList.innerHTML = '<div class="loading">Loading ambitions...</div>';
+        const response = await fetch('data/ambitions.json');
+        data = await response.json();
+        initializeUI();
+        filterAndRender();
+    } catch (error) {
+        console.error('Failed to load data:', error);
+        ambitionsList.innerHTML = '<div class="loading">Failed to load ambition data.</div>';
+    }
+}
 
 function initializeUI() {
     const nations = Object.values(data.nations).filter(n => !n.dlc).sort((a, b) => a.name.localeCompare(b.name));
@@ -1022,6 +1116,21 @@ function renderAmbitions(regular, national) {
         let reqText = formatRequirements(requirements);
         let dlcBadge = ambition.dlc ? '<span class="dlc-badge">' + ambition.dlc + '</span>' : '';
 
+        let eventInfo = '';
+        if (ambition.eventSource && ambition.eventSource.eventName) {
+            const eventDlc = ambition.eventSource.eventDlc ? ' (' + ambition.eventSource.eventDlc + ')' : '';
+            eventInfo = '<div class="event-source">' +
+                '<span class="event-only-badge">Event Only</span>' +
+                '<span class="event-name">Event: "' + ambition.eventSource.eventName + '"' + eventDlc + '</span>' +
+                '<span class="event-trigger">Trigger: ' + ambition.eventSource.trigger + '</span>' +
+            '</div>';
+        } else if (ambition.eventSource) {
+            eventInfo = '<div class="event-source">' +
+                '<span class="event-only-badge">Unavailable</span>' +
+                '<span class="event-trigger">' + ambition.eventSource.trigger + '</span>' +
+            '</div>';
+        }
+
         const nationalClass = isNational ? ' national' : '';
         return '<div class="ambition-card ' + unavailClass + nationalClass + '" data-class="' + ambition.ambitionClass + '">' +
             '<div class="ambition-header">' +
@@ -1035,6 +1144,7 @@ function renderAmbitions(regular, national) {
                 (familyTags ? '<div class="family-tags">' + familyTags + '</div>' : '') +
                 techInfo +
             '</div>' +
+            eventInfo +
             (reqText ? '<div class="requirements">' + reqText + '</div>' : '') +
         '</div>';
     };
@@ -1081,16 +1191,13 @@ function debounce(func, wait) {
     };
 }
 
-document.addEventListener('DOMContentLoaded', () => { initializeUI(); filterAndRender(); });
+document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>'''
 
-    # Embed the data
-    json_data = json.dumps(data, ensure_ascii=False)
-    html_content = html_template.replace('__DATA_PLACEHOLDER__', json_data)
-
-    return html_content
+    # No longer embedding data - it's fetched from data/ambitions.json
+    return html_template
 
 
 def main():

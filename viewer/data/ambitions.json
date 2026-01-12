@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-01-11T14:35:43.405002",
+  "generatedAt": "2026-01-11T17:39:51.028368",
   "ambitionClasses": {
     "1": "Laws",
     "2": "Theologies",
@@ -84,10 +84,10 @@
       "name": "Aksum",
       "dlc": "AKSUM",
       "familyClasses": [
-        "FAMILYCLASS_CHAMPIONS",
+        "FAMILYCLASS_CLERICS",
         "FAMILYCLASS_PATRONS",
-        "FAMILYCLASS_TRADERS",
-        "FAMILYCLASS_CLERICS"
+        "FAMILYCLASS_CHAMPIONS",
+        "FAMILYCLASS_TRADERS"
       ]
     },
     "NATION_ASSYRIA": {
@@ -95,10 +95,10 @@
       "name": "Assyria",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_CHAMPIONS",
-        "FAMILYCLASS_PATRONS",
+        "FAMILYCLASS_HUNTERS",
         "FAMILYCLASS_CLERICS",
-        "FAMILYCLASS_HUNTERS"
+        "FAMILYCLASS_CHAMPIONS",
+        "FAMILYCLASS_PATRONS"
       ]
     },
     "NATION_BABYLONIA": {
@@ -106,10 +106,10 @@
       "name": "Babylonia",
       "dlc": null,
       "familyClasses": [
+        "FAMILYCLASS_HUNTERS",
         "FAMILYCLASS_ARTISANS",
         "FAMILYCLASS_SAGES",
-        "FAMILYCLASS_TRADERS",
-        "FAMILYCLASS_HUNTERS"
+        "FAMILYCLASS_TRADERS"
       ]
     },
     "NATION_CARTHAGE": {
@@ -117,8 +117,8 @@
       "name": "Carthage",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_ARTISANS",
         "FAMILYCLASS_STATESMEN",
+        "FAMILYCLASS_ARTISANS",
         "FAMILYCLASS_RIDERS",
         "FAMILYCLASS_TRADERS"
       ]
@@ -128,10 +128,10 @@
       "name": "Egypt",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_SAGES",
-        "FAMILYCLASS_RIDERS",
+        "FAMILYCLASS_CLERICS",
         "FAMILYCLASS_LANDOWNERS",
-        "FAMILYCLASS_CLERICS"
+        "FAMILYCLASS_SAGES",
+        "FAMILYCLASS_RIDERS"
       ]
     },
     "NATION_GREECE": {
@@ -139,10 +139,10 @@
       "name": "Greece",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_CHAMPIONS",
         "FAMILYCLASS_ARTISANS",
-        "FAMILYCLASS_SAGES",
-        "FAMILYCLASS_PATRONS"
+        "FAMILYCLASS_CHAMPIONS",
+        "FAMILYCLASS_PATRONS",
+        "FAMILYCLASS_SAGES"
       ]
     },
     "NATION_HITTITE": {
@@ -151,8 +151,8 @@
       "dlc": "NATION_HITTITES",
       "familyClasses": [
         "FAMILYCLASS_TRADERS",
-        "FAMILYCLASS_RIDERS",
         "FAMILYCLASS_LANDOWNERS",
+        "FAMILYCLASS_RIDERS",
         "FAMILYCLASS_PATRONS"
       ]
     },
@@ -161,10 +161,10 @@
       "name": "Kush",
       "dlc": "PHARAOHS",
       "familyClasses": [
+        "FAMILYCLASS_HUNTERS",
         "FAMILYCLASS_ARTISANS",
-        "FAMILYCLASS_TRADERS",
         "FAMILYCLASS_LANDOWNERS",
-        "FAMILYCLASS_HUNTERS"
+        "FAMILYCLASS_TRADERS"
       ]
     },
     "NATION_PERSIA": {
@@ -172,10 +172,10 @@
       "name": "Persia",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_STATESMEN",
         "FAMILYCLASS_HUNTERS",
-        "FAMILYCLASS_RIDERS",
-        "FAMILYCLASS_CLERICS"
+        "FAMILYCLASS_CLERICS",
+        "FAMILYCLASS_STATESMEN",
+        "FAMILYCLASS_RIDERS"
       ]
     },
     "NATION_ROME": {
@@ -183,9 +183,9 @@
       "name": "Rome",
       "dlc": null,
       "familyClasses": [
-        "FAMILYCLASS_CHAMPIONS",
         "FAMILYCLASS_STATESMEN",
         "FAMILYCLASS_LANDOWNERS",
+        "FAMILYCLASS_CHAMPIONS",
         "FAMILYCLASS_PATRONS"
       ]
     }
@@ -5140,6 +5140,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "The Tutor Kartir",
+        "eventDlc": "Sacred and Profane",
+        "trigger": "Character studying, Zoroastrian city, Kartir tutor"
       }
     },
     {
@@ -10436,6 +10441,11 @@
         "victoryEligible": false,
         "blockComplete": true,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "To Be A King/Queen",
+        "eventDlc": null,
+        "trigger": "Regent ruling with Rightful Heir alive"
       }
     },
     {
@@ -10588,6 +10598,11 @@
         "victoryEligible": true,
         "blockComplete": true,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "The Road to Glory",
+        "eventDlc": null,
+        "trigger": "Young leader (under 30) with 2+ dead ancestors, on succession"
       }
     },
     {
@@ -10633,6 +10648,11 @@
         "victoryEligible": true,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "Rivals event chain (Let the Land Burn / No Surrender)",
+        "eventDlc": null,
+        "trigger": "At war, breach enemy city, part of Rivals chain"
       }
     },
     {
@@ -10752,6 +10772,11 @@
         "victoryEligible": true,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": null,
+        "eventDlc": null,
+        "trigger": "Unused/placeholder goal"
       }
     },
     {
@@ -10883,6 +10908,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "Religion events",
+        "eventDlc": "Sacred and Profane",
+        "trigger": "Religion-specific event chains"
       }
     },
     {
@@ -10909,6 +10939,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "In Heaven as on Earth",
+        "eventDlc": "Sacred and Profane",
+        "trigger": "Augustine character, Christianity, after High Synod mission"
       }
     },
     {
@@ -10928,6 +10963,11 @@
         "victoryEligible": false,
         "blockComplete": true,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "A Refined Palate",
+        "eventDlc": "Behind the Throne",
+        "trigger": "Leader has high Charisma, unclaimed wine within 5 tiles"
       }
     },
     {
@@ -10966,6 +11006,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "The Jewel of [Nation]",
+        "eventDlc": "Behind the Throne",
+        "trigger": "Another nation owns the Hanging Gardens"
       }
     },
     {
@@ -10989,6 +11034,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "Various conquest/rivalry events",
+        "eventDlc": null,
+        "trigger": "Rivalry or conquest event chains"
       }
     },
     {
@@ -11008,6 +11058,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "Strength and Weakness",
+        "eventDlc": "Behind the Throne",
+        "trigger": "Leader must be Insane, 3+ upset families"
       }
     },
     {
@@ -11040,6 +11095,11 @@
         "victoryEligible": false,
         "blockComplete": false,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "Strength and Weakness",
+        "eventDlc": "Behind the Throne",
+        "trigger": "Leader must be Insane, 3+ upset families"
       }
     },
     {
@@ -11266,6 +11326,11 @@
         "victoryEligible": false,
         "blockComplete": true,
         "global": false
+      },
+      "eventSource": {
+        "eventName": "[Character's] Mark",
+        "eventDlc": "Behind the Throne",
+        "trigger": "Child of leader (teen+), angry foreign leader nearby, have spymaster"
       }
     },
     {
