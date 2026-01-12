@@ -67,9 +67,9 @@ function initializeUI() {
         });
     }
 
-    // Populate category dropdown
+    // Populate category dropdown (alphabetically)
     const classes = Object.entries(data.ambitionClasses)
-        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+        .sort((a, b) => a[1].localeCompare(b[1]));
 
     classes.forEach(([id, name]) => {
         const option = document.createElement('option');

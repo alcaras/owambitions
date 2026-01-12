@@ -792,7 +792,7 @@ header h1 { color: #d4af37; font-size: 2rem; margin-bottom: 5px; }
             <div class="legend-content">
                 <div class="legend-item">
                     <span class="tier-badge">T1-2</span>
-                    <span>Tier range - higher tiers are harder but give more Legitimacy</span>
+                    <span>Tier range the ambition can appear at</span>
                 </div>
                 <div class="legend-item">
                     <span class="family-tag">Landowners</span>
@@ -851,7 +851,7 @@ function initializeUI() {
         nationSelect.appendChild(optgroup);
     }
 
-    Object.entries(data.ambitionClasses).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).forEach(([id, name]) => {
+    Object.entries(data.ambitionClasses).sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => {
         const option = document.createElement('option');
         option.value = id;
         option.textContent = name;
