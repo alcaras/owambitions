@@ -181,6 +181,11 @@ header h1 { color: #d4af37; font-size: 2rem; margin-bottom: 5px; }
                     </div>
                     <div class="filter-group">
                         <label class="checkbox-label">
+                            <input type="checkbox" id="show-event-only" checked> Show event-only
+                        </label>
+                    </div>
+                    <div class="filter-group">
+                        <label class="checkbox-label">
                             <input type="checkbox" id="show-unavailable"> Show unavailable
                         </label>
                     </div>
@@ -230,6 +235,7 @@ const classSelect = document.getElementById('class-select');
 const searchInput = document.getElementById('search-input');
 const showUnavailable = document.getElementById('show-unavailable');
 const nationalOnly = document.getElementById('national-only');
+const showEventOnly = document.getElementById('show-event-only');
 const resultCount = document.getElementById('result-count');
 const ambitionsList = document.getElementById('ambitions-list');
 
@@ -284,6 +290,7 @@ function initializeUI() {
     searchInput.addEventListener('input', debounce(filterAndRender, 200));
     showUnavailable.addEventListener('change', filterAndRender);
     nationalOnly.addEventListener('change', filterAndRender);
+    showEventOnly.addEventListener('change', filterAndRender);
 }
 
 function setupCompletedButtons() {
@@ -342,6 +349,7 @@ function filterAndRender() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const showUnavail = showUnavailable.checked;
     const showNationalOnly = nationalOnly.checked;
+    const showEventOnlyAmbitions = showEventOnly.checked;
 
     // Calculate tier from completed count
     let tierFilter = null;
@@ -360,6 +368,8 @@ function filterAndRender() {
         }
         // Filter by class
         if (selectedClass && ambition.ambitionClass !== parseInt(selectedClass)) return false;
+        // Filter event-only ambitions
+        if (!showEventOnlyAmbitions && ambition.eventSource) return false;
         // Filter by search term
         if (searchTerm) {
             const searchableText = [ambition.name, ambition.ambitionClassName, ambition.helpText || '',
@@ -378,8 +388,9 @@ function filterAndRender() {
             return { ...ambition, availability };
         });
         withAvailability.sort((a, b) => {
-            if (a.availability.available !== b.availability.available) return a.availability.available ? -1 : 1;
-            if (a.minTier !== b.minTier) return a.minTier - b.minTier;
+            // Sort by category first, then by name
+            const catCompare = a.ambitionClassName.localeCompare(b.ambitionClassName);
+            if (catCompare !== 0) return catCompare;
             return a.name.localeCompare(b.name);
         });
         return showUnavail ? withAvailability : withAvailability.filter(a => a.availability.available);
