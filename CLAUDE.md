@@ -38,10 +38,12 @@ A standalone HTML viewer that works without a server:
 - **Nation selector**: Filters by nation-specific requirements, shows available families
 - **Family checkboxes**: Highlight ambitions preferred by selected families
 - **Accepted Ambitions buttons (0-9)**: Filter by tier based on game progress
-- **Category filter**: Filter by ambition class (Military, Economic, etc.)
+- **Category filter**: Filter by ambition class (Military, Economic, etc.), sorted alphabetically
 - **Search**: Full-text search across names and requirements
+- **National ambitions only toggle**: Filter to show only victory-eligible tier-10 ambitions
 - **Show Unavailable toggle**: See filtered-out ambitions
 - **National Ambitions section**: Separate display for victory-eligible tier-10 ambitions
+- **Event-only badges**: Cards show event source info for ambitions that can only come from events
 
 **Layout**: Sidebar with filters on left, scrollable ambition cards on right
 
